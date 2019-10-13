@@ -12,8 +12,6 @@ fup = f0 + BW/2;
 
 %длительность 1 символа
 Tsym = 2^SF / BW;
-%скорость роста частоты
-mu = BW/Tsym;
 %величина дикрета частота на 1 символ
 deltaF = (BW / (2^(SF+1))) ;
 %начальная частота
@@ -34,3 +32,4 @@ t = [t1, t2];
 s = [signal1, signal2];
 signal.values = s;
 signal.time = t;
+signal.deltaF = deltaF;
