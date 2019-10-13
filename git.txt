@@ -17,3 +17,6 @@ git checkout newBranch - переключитьс€ на ветку
 git add FILES - добавление файлов (. - все файлы)
 git commit -m "NAME OF BRANCH"
 git push origin newBranch - пушим в новую ветку
+//удаление ветки
+git branch -D newBranch - удаление ветки (локально)
+git push origin :newBranch - ветка удал€етс€ на сервере (github)
