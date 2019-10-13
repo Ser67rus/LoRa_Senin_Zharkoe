@@ -1,0 +1,19 @@
+git commit -m "Commit 1"
+git push origin master - залив в мастер-ветку
+
+git log - посмотреть список коммитов
+
+git checkout NUMBER - переход к другому коммиту
+
+git checkout master - переходим к последнему коммиту мастер-ветки
+
+git reset --hard NUMBER - откат коммитов (их удаление), HARD RESET
+
+//работа с ветками
+git branch - отобразить все ветки (зеленым подсвечена активная ветка)
+git branch newBranch - создать новую ветку (newBranch - имя, мб любым)
+git checkout newBranch - переключиться на ветку
+//залив в ветку
+git add FILES - добавление файлов (. - все файлы)
+git commit -m "NAME OF BRANCH"
+git push origin newBranch - пушим в новую ветку
