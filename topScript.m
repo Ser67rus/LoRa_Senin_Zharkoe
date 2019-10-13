@@ -90,8 +90,8 @@ for SNR=0:-1:-60
     SNR_arr = [SNR_arr SNR];
     c_arr = [c_arr c];
 end
-
+%%
 figure;
-plot(SNR_arr,c_arr/m);
+plot(SNR_arr,(1-c_arr/m)*100);
 grid on
-title('BER');
+title('SER');
