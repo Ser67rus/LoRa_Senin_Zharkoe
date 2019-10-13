@@ -20,3 +20,5 @@ git push origin newBranch - пушим в новую ветку
 //удаление ветки
 git branch -D newBranch - удаление ветки (локально)
 git push origin :newBranch - ветка удаляется на сервере (github)
+
+git merge newBranch - слить ветку с мастер-веткой
