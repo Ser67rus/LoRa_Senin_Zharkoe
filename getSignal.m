@@ -27,9 +27,11 @@ signal1 = chirp(t1,fstart,T1,fup);
 %формируем 2-ю часть сигнала
 signal2 = chirp(t2,fdown,Tsym,fstart);
 
+signal3 = zeros(1,1024);
+
 %соединяем вектора и выводим
 t = [t1, t2];
-s = [signal1, signal2];
+s = [signal1, signal2, signal3];
 signal.values = s;
 signal.time = t;
 signal.deltaF = deltaF;
