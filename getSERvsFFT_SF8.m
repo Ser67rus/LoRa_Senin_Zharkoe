@@ -4,10 +4,10 @@ close all
 %%
 %основные параметры
 f0 = 0; %промежуточная частота
-SF = 7; %коэффициент расширения спектра
-%SNR = -30; %с/ш в дБ
+SF = 8; %коэффициент расширения спектра
+% SNR = 20; %с/ш в дБ
 BW = 125e3; %ширина спектра
-k = 64;
+k = 128;
 N = 1000; %число испытаний
 fs = 2e6; %частота дискретизации
 %%
@@ -20,7 +20,7 @@ fup = f0+BW/2;
 Tsym = 2^SF / BW;
 %величина дикрета частоты на 1 символ
 deltaF = BW / (2^(SF+1)) ;
-%начальная частота
+
 fstart = fdown + k*deltaF;
 %время достижения максимального значения частоты
 T1 = ((2^(SF+1)-k)/2^(SF+1))*Tsym;
@@ -42,16 +42,11 @@ t = [t1,t2,t3];
 % grid on;
 %%
 %правильно добавляем шум
-errorsSF7 = zeros(1,length(-60:1:10));
+errorsSF8 = zeros(1,length(-60:1:10));
 j = 1;
 for SNR = -60:1:10
     for i=1:N
         signal = awgn(s,SNR);
-        % sigma = 10^(-SNR);
-        % noise = sigma*randn(1,length(t)) .* exp(1i*2*pi*rand(1,length(t)));
-        % signal = signal + noise;
-        % figure; plot(-fs/2:fs/length(signal):fs/2-fs/length(signal),fftshift(abs(fft(signal))));
-        % grid on;
         %%
         %формируем опорный сигнал
         t0 = 0:1/fs:Tsym;
@@ -64,20 +59,15 @@ for SNR = -60:1:10
         signal = signal.*conj(signal0);
         Spect = fft(signal,2^(SF+5));
         freqs = -fs/2:fs/length(Spect):fs/2-fs/length(Spect);
-        % figure;
-        % plot(freqs/deltaF,fftshift(abs(Spect)));
-        % grid on;
-        
-        % figure;
-        % plot(fftshift(abs(Spect)));
-        % grid on;
+
         sp = fftshift(abs(Spect));
         [Smax idx] = max(sp);
-        k1 = -(idx-(2^(SF+4)+1));
+        
+        k1 = 4097 - idx;
         if(k1 == k)
-            errorsSF7(j) = errorsSF7(j) + 1;
+            errorsSF8(j) = errorsSF8(j) + 1;
         end
     end
     j = j + 1;
 end
-save SF7;
+save SF8;

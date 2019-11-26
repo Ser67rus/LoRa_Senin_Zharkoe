@@ -4,11 +4,11 @@ close all
 %%
 %основные параметры
 f0 = 0; %промежуточна€ частота
-SF = 7; %коэффициент расширени€ спектра
-%SNR = -30; %с/ш в дЅ
+SF = 9; %коэффициент расширени€ спектра
+% SNR = 20; %с/ш в дЅ
 BW = 125e3; %ширина спектра
-k = 63;
-N = 100; %число испытаний
+k = 256;
+N = 1000; %число испытаний
 fs = 2e6; %частота дискретизации
 %%
 %формирование сигнала
@@ -20,7 +20,6 @@ fup = f0+BW/2;
 Tsym = 2^SF / BW;
 %величина дикрета частоты на 1 символ
 deltaF = BW / (2^(SF+1)) ;
-%начальна€ частота
 fstart = fdown + k*deltaF;
 %врем€ достижени€ максимального значени€ частоты
 T1 = ((2^(SF+1)-k)/2^(SF+1))*Tsym;
@@ -35,23 +34,18 @@ signal1 = chirp(t1,fstart,T1,fup) + 1i*chirp(t1,fstart,T1,fup,'linear',90);
 %формируем 2-ю часть сигнала
 signal2 = chirp(t2,fdown,Tsym,fstart)+1i*chirp(t2,fdown,Tsym,fstart,'linear',90);
 signal3 = zeros(1,length(t3));
-signal = [signal1, signal2, signal3];
+s = [signal1, signal2, signal3];
 t = [t1,t2,t3];
 %сам сигнал
 % figure; plot(-fs/2:fs/length(signal):fs/2-fs/length(signal),fftshift(abs(fft(signal))));
 % grid on;
 %%
 %правильно добавл€ем шум
-errors = zeros(1,length(-30:5:30));
+errorsSF9 = zeros(1,length(-60:1:10));
 j = 1;
-for SNR = -30:5:30
+for SNR = -60:1:10
     for i=1:N
-        signal = awgn(signal,SNR);
-        % sigma = 10^(-SNR);
-        % noise = sigma*randn(1,length(t)) .* exp(1i*2*pi*rand(1,length(t)));
-        % signal = signal + noise;
-        % figure; plot(-fs/2:fs/length(signal):fs/2-fs/length(signal),fftshift(abs(fft(signal))));
-        % grid on;
+        signal = awgn(s,SNR);
         %%
         %формируем опорный сигнал
         t0 = 0:1/fs:Tsym;
@@ -62,20 +56,17 @@ for SNR = -30:5:30
         %%
         %сворачиваем с опорным
         signal = signal.*conj(signal0);
-        Spect = fft(signal,2^12);
+        Spect = fft(signal,2^(SF+5));
         freqs = -fs/2:fs/length(Spect):fs/2-fs/length(Spect);
-        % figure;
-        % plot(freqs/deltaF,fftshift(abs(Spect)));
-        % grid on;
-        
-        % figure;
-        % plot(fftshift(abs(Spect)));
-        % grid on;
+
         sp = fftshift(abs(Spect));
         [Smax idx] = max(sp);
-        k1 = -(idx-(2^11+1));
+        
+        k1 = 8193 - idx;
         if(k1 == k)
-            
+            errorsSF9(j) = errorsSF9(j) + 1;
         end
     end
+    j = j + 1;
 end
+save SF9;
