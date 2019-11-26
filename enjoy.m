@@ -18,10 +18,10 @@ load SF10;
 load SF11;
 load SF12;
 %%
-figure; plot(-60:1:10,errorsSF7);
-hold on; plot(-60:1:10,errorsSF8);
-hold on; plot(-60:1:10,errorsSF9);
-hold on; plot(-60:1:10,errorsSF10);
-hold on; plot(-60:1:10,errorsSF11);
-hold on; plot(-60:1:10,errorsSF12);
+figure; plot(-60:0.5:10,errorsSF7);
+hold on; plot(-60:0.5:10,errorsSF8);
+hold on; plot(-60:0.5:10,errorsSF9);
+hold on; plot(-60:0.5:10,errorsSF10);
+hold on; plot(-60:0.5:10,errorsSF11);
+hold on; plot(-60:0.5:10,errorsSF12);
 grid on;
